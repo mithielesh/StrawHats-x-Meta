@@ -1,0 +1,13 @@
+# Web Server & Framework
+fastapi>=0.109.0
+uvicorn>=0.27.0
+
+# Data Validation (Required by OpenEnv spec)
+pydantic>=2.5.0
+
+# AI Inference (Required for the baseline script)
+openai>=1.12.0
+requests>=2.31.0
+
+#Environment Variables
+python-dotenv>=1.0.0

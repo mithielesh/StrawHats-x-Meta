@@ -1,0 +1,17 @@
+environment:
+  name: auto-applicant
+  version: 1.0.0
+  description: An interactive job board and application portal simulation testing form navigation, conditional logic, and external tool usage.
+
+tasks:
+  - task_id: level_1
+    description: "Easy: Basic search and apply. The agent must find the correct job (Junior Frontend Engineer) and fill out static text fields."
+  
+  - task_id: level_2
+    description: "Medium: Conditional logic. The agent must apply for the Backend Intern role, requiring conditional visa logic and the selection of a specific resume variant."
+  
+  - task_id: level_3
+    description: "Hard: Synthesis and Tool Use. The agent must apply for the ML Engineer role, requiring the use of a salary database tool, exact date calculations for months of experience, and generating a custom project summary."
+
+requirements:
+  - requirements.txt

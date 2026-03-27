@@ -1,0 +1,40 @@
+[
+  {
+    "job_id": "job_001",
+    "title": "Junior Frontend Engineer",
+    "company": "TechCorp",
+    "description": "Looking for an entry-level frontend developer with React experience.",
+    "form_schema": [
+      { "name": "full_name", "field_type": "text", "required": true },
+      { "name": "email", "field_type": "text", "required": true },
+      { "name": "resume", "field_type": "file_upload", "required": true }
+    ]
+  },
+  {
+    "job_id": "job_002",
+    "title": "Backend Systems Intern",
+    "company": "DataFlow Inc",
+    "description": "Backend intern role. Must have Node.js experience. International students welcome, but require visa details.",
+    "form_schema": [
+      { "name": "full_name", "field_type": "text", "required": true },
+      { "name": "email", "field_type": "text", "required": true },
+      { "name": "requires_visa", "field_type": "dropdown", "required": true, "options": ["Yes", "No"] },
+      { "name": "visa_type", "field_type": "text", "required": false },
+      { "name": "resume", "field_type": "file_upload", "required": true }
+    ]
+  },
+  {
+    "job_id": "job_003",
+    "title": "Machine Learning Engineer (New Grad)",
+    "company": "AI Frontier",
+    "description": "Highly competitive ML role. We need candidates with proven deep learning projects. You must state your exact months of Python experience and your expected salary.",
+    "form_schema": [
+      { "name": "full_name", "field_type": "text", "required": true },
+      { "name": "email", "field_type": "text", "required": true },
+      { "name": "months_python_experience", "field_type": "number", "required": true },
+      { "name": "expected_salary", "field_type": "number", "required": true },
+      { "name": "project_summary", "field_type": "textarea", "required": true },
+      { "name": "resume", "field_type": "file_upload", "required": true }
+    ]
+  }
+]

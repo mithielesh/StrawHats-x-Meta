@@ -1,0 +1,39 @@
+{
+  "level_1_profile": {
+    "name": "Alex Student",
+    "email": "alex@university.edu",
+    "target_role": "Junior Frontend Engineer",
+    "available_files": ["resume.pdf"]
+  },
+  "level_2_profile": {
+    "name": "Jordan Coder",
+    "email": "jordan@university.edu",
+    "target_role": "Backend Intern",
+    "visa_status": "F-1",
+    "requires_sponsorship": "Yes",
+    "available_files": ["frontend_resume.pdf", "backend_resume.pdf", "cover_letter.pdf"]
+  },
+  "level_3_profile": {
+    "name": "Taylor AI",
+    "email": "taylor@university.edu",
+    "target_role": "Machine Learning Engineer",
+    "location_preference": "San Francisco",
+    "available_files": ["ml_resume.pdf", "transcript.pdf"],
+    "portfolio": {
+      "projects": [
+        {
+          "name": "React E-Commerce",
+          "tech": ["React", "Node"],
+          "start_date": "2024-01-01",
+          "end_date": "2024-06-01"
+        },
+        {
+          "name": "CNN Image Classifier",
+          "tech": ["Python", "PyTorch"],
+          "start_date": "2025-01-01",
+          "end_date": "2026-03-01"
+        }
+      ]
+    }
+  }
+}
