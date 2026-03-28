@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openenv-environment"
+version = "1.0.0"
+description = "Hackathon OpenEnv Submission"
+authors = [
+    {name = "STRAW HATS"}
+]
