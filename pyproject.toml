@@ -6,6 +6,9 @@ build-backend = "setuptools.build_meta"
 name = "openenv-environment"
 version = "1.0.0"
 description = "Hackathon OpenEnv Submission"
-authors = [
-    {name = "STRAW HATS"}
+dependencies = [
+    "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:app"
