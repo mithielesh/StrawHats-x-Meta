@@ -74,3 +74,12 @@ class Reward(BaseModel):
     """
     value: float = Field(..., ge=-1.0, le=1.0, description="The numerical reward for the step.")
     reason: str = Field(..., description="Why this reward was given (helps debug the agent).")
+
+class StepResponse(BaseModel):
+    """
+    The strictly typed response space for the step endpoint.
+    """
+    observation: Observation
+    reward: Reward
+    done: bool
+    info: Dict[str, Any]

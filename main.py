@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 
-from models import Action, Observation, Reward
+from models import Action, Observation, Reward, StepResponse
 from environment import AutoApplicantEnv
 
 app = FastAPI(title="Auto-Applicant OpenEnv", version="1.0.0")
@@ -19,17 +19,17 @@ async def reset_environment(level: str = "level_1"):
     """Resets the environment to the beginning of a task."""
     return env.reset(level=level)
 
-@app.post("/step")
+@app.post("/step", response_model=StepResponse)
 async def take_step(action: Action):
     """Takes an action from the agent and returns the result."""
     try:
         obs, reward, done, info = env.step(action)
-        return {
-            "observation": obs,
-            "reward": reward,
-            "done": done,
-            "info": info
-        }
+        return StepResponse(
+            observation=obs,
+            reward=reward,
+            done=done,
+            info=info
+        )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
