@@ -161,6 +161,10 @@ class AutoApplicantEnv:
         # Level 1 success
         return 1.0, "Success! Level 1 basic application completed."
 
+    def state(self) -> Observation:
+        """Returns the current state without state mutation."""
+        return self._get_observation()
+
     def _get_observation(self) -> Observation:
         """Packages the internal state into the Pydantic Observation model."""
         # Hide the profile details so the agent has to figure it out
