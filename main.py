@@ -42,7 +42,7 @@ async def get_state():
 async def get_tasks():
     """Returns the available tasks and the action schema."""
     return {
-        "tasks": ["level_1", "level_2", "level_3"],
+        "task_ids": ["level_1", "level_2", "level_3"],
         "action_schema": Action.model_json_schema()
     }
 
