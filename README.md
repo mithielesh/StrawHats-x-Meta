@@ -1,6 +1,5 @@
 ---
 title: StrawHat-X-Meta AutoApplicant
-emoji: 🎩
 colorFrom: blue
 colorTo: indigo
 sdk: docker
