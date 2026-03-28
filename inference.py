@@ -1,37 +1,32 @@
 import os
-import os
 import json
 import requests
 from openai import OpenAI
-from dotenv import dotenv_values # <-- We use dotenv_values instead
 
-# 1. Read the file directly, ignoring Windows environment variables completely
-config = dotenv_values(".env") 
-api_key = config.get("OPENAI_API_KEY")
+# ==========================================
+# HACKATHON REQUIRED ENVIRONMENT VARIABLES
+# ==========================================
+# The grader will inject these. We use fallback values just in case you test locally.
+API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:11434/v1") 
+MODEL_NAME = os.environ.get("MODEL_NAME", "qwen2.5-coder")
+HF_TOKEN = os.environ.get("HF_TOKEN", "dummy-token")
 
-# 2. Safety check: Did it actually find the file?
-if not api_key:
-    print("ERROR: Python cannot find your key. Your file might be named '.env.txt' instead of '.env'.")
-    exit(1)
-
-print(f"DEBUG: Successfully pulled key from file: {api_key[:6]}...")
-
-# 3. Initialize the client using the direct file string
+# 1. Initialize OpenAI Client strictly using the required variables
 client = OpenAI(
-    base_url="https://router.huggingface.co/v1",
-    api_key=api_key 
+    base_url=API_BASE_URL,
+    api_key=HF_TOKEN 
 )
 
-BASE_URL = "https://liquozous-strawhat-x-meta.hf.space"
+# 2. Your Live OpenEnv Space URL
+SPACE_URL = "https://liquozous-strawhat-x-meta.hf.space"
 
 def run_agent(level: str):
     print(f"\n{'='*50}\nStarting Agent for {level.upper()}\n{'='*50}")
 
-    # 1. Reset Environment for the specific level
-    res = requests.post(f"{BASE_URL}/reset", params={"level": level})
+    # Reset Environment for the specific level
+    res = requests.post(f"{SPACE_URL}/reset", params={"level": level})
     obs = res.json()
 
-    # The System Prompt explaining the rules to the LLM
     messages = [
         {
             "role": "system", 
@@ -42,8 +37,7 @@ def run_agent(level: str):
     for step in range(15): # Max 15 steps per episode
         print(f"\n--- Step {step + 1} ---")
 
-        # Get action schema so the LLM knows what it is allowed to do
-        schema_res = requests.get(f"{BASE_URL}/tasks").json()
+        schema_res = requests.get(f"{SPACE_URL}/tasks").json()
         action_schema = schema_res["action_schema"]
 
         prompt = f"""
@@ -59,10 +53,10 @@ def run_agent(level: str):
 
         messages.append({"role": "user", "content": prompt})
 
-        # Ask the Meta Llama model via Hugging Face for the next move
         try:
+            # Strictly using the required MODEL_NAME variable
             response = client.chat.completions.create(
-                model="Qwen/Qwen2.5-72B-Instruct:fastest", 
+                model=MODEL_NAME, 
                 messages=messages
             )
         except Exception as e:
@@ -72,7 +66,6 @@ def run_agent(level: str):
         action_json_str = response.choices[0].message.content
         print(f"Raw Agent decision: {action_json_str}")
 
-        # Robustness: Clean up markdown if the LLM ignores instructions
         cleaned_json_str = action_json_str.strip()
         if cleaned_json_str.startswith("```json"):
             cleaned_json_str = cleaned_json_str[7:]
@@ -91,14 +84,13 @@ def run_agent(level: str):
             break
 
         # Send the LLM's action to your FastAPI server
-        step_res = requests.post(f"{BASE_URL}/step", json=action_dict)
+        step_res = requests.post(f"{SPACE_URL}/step", json=action_dict)
         step_data = step_res.json()
 
         obs = step_data["observation"]
         reward = step_data["reward"]
         done = step_data["done"]
 
-        # Add the result to the history so the LLM remembers what just happened
         messages.append({"role": "assistant", "content": cleaned_json_str})
         messages.append({"role": "user", "content": f"Action result - Reward: {reward['value']}, System Message: {obs['system_message']}"})
 
@@ -106,13 +98,11 @@ def run_agent(level: str):
             print("\nAgent finished the episode!")
             break
 
-    # Get final Grader Score from your engine
-    grader_res = requests.get(f"{BASE_URL}/grader")
+    grader_res = requests.get(f"{SPACE_URL}/grader")
     grader_data = grader_res.json()
     print(f"\n>>> FINAL SCORE for {level}: {grader_data['score']} ({grader_data['reason']}) <<<")
 
 if __name__ == "__main__":
-    # The hackathon requires testing at least 3 tasks
     tasks = ["level_1", "level_2", "level_3"]
     for task in tasks:
         run_agent(task)

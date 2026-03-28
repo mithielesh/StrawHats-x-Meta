@@ -10,6 +10,10 @@ app = FastAPI(title="Auto-Applicant OpenEnv", version="1.0.0")
 # Instantiate our environment engine globally
 env = AutoApplicantEnv()
 
+@app.get("/")
+def home():
+    return {"status": "OpenEnv Server is Live", "author": "Liquozous"}
+
 @app.post("/reset", response_model=Observation)
 async def reset_environment(level: str = "level_1"):
     """Resets the environment to the beginning of a task."""

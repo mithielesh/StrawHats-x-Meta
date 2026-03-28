@@ -50,6 +50,10 @@ class AutoApplicantEnv:
         
         return self._get_observation()
 
+    def state(self):
+        """OpenEnv required interface method to return the current state."""
+        return self._get_observation()
+
     def step(self, action: Action) -> Tuple[Observation, Reward, bool, Dict]:
         """Processes the agent's action and updates the state."""
         self.step_count += 1
