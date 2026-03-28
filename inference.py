@@ -8,8 +8,8 @@ from openai import OpenAI
 # ==========================================
 # The grader will inject these. We use fallback values just in case you test locally.
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:11434/v1") 
-MODEL_NAME = os.environ.get("MODEL_NAME", "qwen2.5-coder")
-HF_TOKEN = os.environ.get("HF_TOKEN", "dummy-token")
+MODEL_NAME = os.environ.get("MODEL_NAME", "qwen2.5-coder:1.5b")
+HF_TOKEN = os.environ.get("HF_TOKEN", "ollama")
 
 # 1. Initialize OpenAI Client strictly using the required variables
 client = OpenAI(

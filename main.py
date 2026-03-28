@@ -36,7 +36,7 @@ async def take_step(action: Action):
 @app.get("/state", response_model=Observation)
 async def get_state():
     """Returns the current state without taking an action."""
-    return env._get_observation()
+    return env.state()
 
 @app.get("/tasks")
 async def get_tasks():
