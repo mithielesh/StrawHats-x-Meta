@@ -21,8 +21,3 @@ An autonomous job-application agent environment. The environment simulates a rea
 * **level_2 (Medium):** Introduces conditional logic handling (checking Visa requirements based on role).
 * **level_3 (Hard):** Requires external tool usage (querying a Salary DB by location) and mathematical reasoning (converting years to months of experience).
 
-## Setup Instructions
-1. Clone the repository to your local machine.
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
