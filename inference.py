@@ -6,7 +6,6 @@ from openai import OpenAI
 # ==========================================
 # HACKATHON REQUIRED ENVIRONMENT VARIABLES
 # ==========================================
-# The grader will inject these. We use fallback values just in case you test locally.
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:11434/v1") 
 MODEL_NAME = os.environ.get("MODEL_NAME", "qwen2.5-coder:1.5b")
 HF_TOKEN = os.environ.get("HF_TOKEN", "ollama")
@@ -23,6 +22,11 @@ SPACE_URL = "https://liquozous-strawhat-x-meta.hf.space"
 def run_agent(level: str):
     print(f"\n{'='*50}\nStarting Agent for {level.upper()}\n{'='*50}")
 
+    # ==========================================
+    # GRADER REQUIRED: [START]
+    # ==========================================
+    print(f"[START] task={level}", flush=True)
+
     # Reset Environment for the specific level
     res = requests.post(f"{SPACE_URL}/reset", params={"level": level})
     obs = res.json()
@@ -34,8 +38,11 @@ def run_agent(level: str):
         }
     ]
 
+    step_count = 0
+
     for step in range(15): # Max 15 steps per episode
-        print(f"\n--- Step {step + 1} ---")
+        step_count += 1
+        print(f"\n--- Step {step_count} ---")
 
         schema_res = requests.get(f"{SPACE_URL}/tasks").json()
         action_schema = schema_res["action_schema"]
@@ -91,8 +98,16 @@ def run_agent(level: str):
         reward = step_data["reward"]
         done = step_data["done"]
 
+        # Ensure reward is extracted as a flat number (in case your API returns it as a dict)
+        reward_val = reward.get("value", 0.0) if isinstance(reward, dict) else reward
+
+        # ==========================================
+        # GRADER REQUIRED: [STEP]
+        # ==========================================
+        print(f"[STEP] step={step_count} reward={reward_val}", flush=True)
+
         messages.append({"role": "assistant", "content": cleaned_json_str})
-        messages.append({"role": "user", "content": f"Action result - Reward: {reward['value']}, System Message: {obs['system_message']}"})
+        messages.append({"role": "user", "content": f"Action result - Reward: {reward_val}, System Message: {obs['system_message']}"})
 
         if done:
             print("\nAgent finished the episode!")
@@ -100,7 +115,14 @@ def run_agent(level: str):
 
     grader_res = requests.get(f"{SPACE_URL}/grader")
     grader_data = grader_res.json()
-    print(f"\n>>> FINAL SCORE for {level}: {grader_data['score']} ({grader_data['reason']}) <<<")
+    final_score = grader_data['score']
+    print(f"\n>>> FINAL SCORE for {level}: {final_score} ({grader_data['reason']}) <<<")
+
+    # ==========================================
+    # GRADER REQUIRED: [END]
+    # ==========================================
+    print(f"[END] task={level} score={final_score} steps={step_count}", flush=True)
+
 
 if __name__ == "__main__":
     tasks = ["level_1", "level_2", "level_3"]
