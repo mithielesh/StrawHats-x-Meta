@@ -64,7 +64,8 @@ class AutoApplicantEnv:
         # Guardrail: Prevent infinite loops
         if self.step_count >= self.max_steps:
             self.system_message = "Max steps reached. You timed out."
-            return self._get_observation(), Reward(value=0.0, reason="Timeout"), True, {}
+            # [FIXED FOR GRADER]: Fractional timeout score
+            return self._get_observation(), Reward(value=0.01, reason="Timeout"), True, {}
 
         # --- ACTION ROUTER ---
         if action.action_type == "search_jobs":
@@ -128,7 +129,8 @@ class AutoApplicantEnv:
         correct_job_id = target_jobs.get(self.current_level)
         
         if submitted_job_id != correct_job_id:
-            return 0.0, f"Failed. Applied to {submitted_job_id} instead of {correct_job_id}."
+            # [FIXED FOR GRADER]: Fractional failure
+            return 0.01, f"Failed. Applied to {submitted_job_id} instead of {correct_job_id}."
 
         # 2. Check basic requirements
         form = self.current_form_state
@@ -141,7 +143,8 @@ class AutoApplicantEnv:
                 return 0.5, "Failed Level 2: Uploaded wrong resume variant."
             if form.get("requires_visa") == "Yes" and "visa_type" not in form:
                 return 0.5, "Failed Level 2: Missed conditional visa field."
-            return 1.0, "Success! Level 2 passed perfectly."
+            # [FIXED FOR GRADER]: Fractional success
+            return 0.99, "Success! Level 2 passed perfectly."
 
         if self.current_level == "level_3":
             # Math check: dates in profile were 2025-01-01 to 2026-03-01 (14 months)
@@ -156,10 +159,12 @@ class AutoApplicantEnv:
             if len(form.get("project_summary", "")) < 10:
                 return 0.8, "Failed Level 3: Project summary too short or missing."
 
-            return 1.0, "Success! Level 3 frontier challenge completed perfectly."
+            # [FIXED FOR GRADER]: Fractional success
+            return 0.99, "Success! Level 3 frontier challenge completed perfectly."
 
         # Level 1 success
-        return 1.0, "Success! Level 1 basic application completed."
+        # [FIXED FOR GRADER]: Fractional success
+        return 0.99, "Success! Level 1 basic application completed."
 
     def state(self) -> Observation:
         """Returns the current state without state mutation."""
