@@ -21,7 +21,7 @@ class AutoApplicantEnv:
         
         self.step_count = 0
         self.max_steps = 15
-        self.final_score = 0.0
+        self.final_score = 0.01
         self.final_reason = "Application not submitted."
 
     def _load_json(self, filepath: str) -> Any:
@@ -42,7 +42,7 @@ class AutoApplicantEnv:
         self.visible_jobs = None
         self.job_description = None
         self.form_schema = None
-        self.final_score = 0.0
+        self.final_score = 0.01
         self.final_reason = "Application not submitted."
         self.current_form_state = {}
         self.salary_db_result = None
@@ -65,6 +65,8 @@ class AutoApplicantEnv:
         if self.step_count >= self.max_steps:
             self.system_message = "Max steps reached. You timed out."
             # [FIXED FOR GRADER]: Fractional timeout score
+            self.final_score = 0.01  # FORCE THE INTERNAL STATE TO 0.01
+            self.final_reason = "Timeout"
             return self._get_observation(), Reward(value=0.01, reason="Timeout"), True, {}
 
         # --- ACTION ROUTER ---
