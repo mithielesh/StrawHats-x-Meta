@@ -8,7 +8,7 @@ from openai import OpenAI
 # ==========================================
 API_BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:11434/v1") 
 MODEL_NAME = os.environ.get("MODEL_NAME", "qwen2.5-coder:1.5b")
-HF_TOKEN = os.environ.get("HF_TOKEN", "ollama")
+HF_TOKEN = os.environ.get("HF_TOKEN")
 
 # 1. Initialize OpenAI Client strictly using the required variables
 client = OpenAI(
