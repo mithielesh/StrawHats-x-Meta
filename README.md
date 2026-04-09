@@ -1,5 +1,5 @@
 ---
-title: StrawHat-X-Meta AutoApplicant
+title: StrawHats-X-Meta AutoApplicant
 colorFrom: blue
 colorTo: indigo
 sdk: docker
